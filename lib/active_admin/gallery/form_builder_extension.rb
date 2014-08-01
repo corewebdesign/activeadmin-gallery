@@ -4,7 +4,7 @@ module ActiveAdmin
       extend ActiveSupport::Concern
 
       def has_many_images(relation_name, options = {}, &block)
-        options = (options || {}).reverse_merge(components: [:upload], fields: [:title, :alt])
+        options = (options || {}).reverse_merge(components: [:upload], fields: [:title, :alt, :credit])
         has_many(relation_name, options.reverse_merge(class: "has_many_images")) do |i|
 
           preview_size = options[:preview_size] || [ 125, 125 ]
@@ -30,6 +30,7 @@ module ActiveAdmin
                 i.input :image, as: :dragonfly, input_html: options
                 i.input :title, as: :text if options[:fields].include? :title
                 i.input :alt if options[:fields].include? :alt
+                i.input :credit if options[:fields].include? :credit
                 i.input :position, as: :hidden
                 i.destroy
                 i.form_buffers.last
@@ -42,12 +43,13 @@ module ActiveAdmin
       end
 
       def has_image(relation_name, options = {}, &block)
-        options = (options || {}).reverse_merge(components: [:preview, :upload], fields: [:title, :alt])
+        options = (options || {}).reverse_merge(components: [:preview, :upload], fields: [:title, :alt, :credit])
         object.send("build_#{relation_name}") unless object.send(relation_name).present?
         content = inputs_for_nested_attributes(for: relation_name, class: "inputs has_image") do |form|
           form.input :image, as: :dragonfly, input_html: options
           form.input :title, as: :text if options[:fields].include? :title
           form.input :alt if options[:fields].include? :alt
+          form.input :credit if options[:fields].include? :credit
           form.destroy
           form.form_buffers.last
         end

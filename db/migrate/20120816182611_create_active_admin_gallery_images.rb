@@ -7,6 +7,7 @@ class CreateActiveAdminGalleryImages < ActiveRecord::Migration
       t.string   :imageable_relation
       t.string   :alt
       t.string   :title
+      t.string   :credit
       t.string   :image_name
       t.string   :image_uid
     end
